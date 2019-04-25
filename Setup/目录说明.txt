@@ -1,0 +1,2 @@
+（1）MyBrowser33.iss   : inno setup的安装脚本文件
+（2）output            : inno setup打包生成的安装文件

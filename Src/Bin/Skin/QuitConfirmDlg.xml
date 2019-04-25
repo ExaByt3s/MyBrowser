@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Window size="434,260" mininfo="434,260" maxinfo="434,260" caption="0,0,0,46" sizebox="0,0,0,0">
+    <Font id = "0" name="Segoe UI" size="18" bold="true" italic="false" /> 
+  	<Font id = "1" name="Segoe UI" size="21" bold="false" italic="false" /> 
+	  <Font id = "2" name="Segoe UI" size="21" bold="false" italic="false" /> 
+
+	<!-- 整个窗口的背景色 -->
+	<VerticalLayout bkcolor="#FFE5E5E5" bordersize="1" bordercolor="#c2c2c2"> 
+    <!-- 标题栏区 -->
+    <VerticalLayout height="45" width="434">
+      <!--
+			<HorizontalLayout height="2" bkcolor="#ffed1d1d">
+			</HorizontalLayout>
+      -->
+      <HorizontalLayout bkcolor="#FF9FC5E8"> <!-- 00ffffff -->
+				<VerticalLayout >
+					<HorizontalLayout float="true" pos="5,5,38,40" bkimage="file='images/logo.png'" />
+				</VerticalLayout>
+				<VerticalLayout float="true" pos="50,5,350,40">
+					<Label name="lable_caption" height="35" width="100" text="退出确认" font="1"/>
+				</VerticalLayout>
+      </HorizontalLayout>
+    </VerticalLayout>
+		
+    <!-- 客户区 -->
+    <VerticalLayout  padding="40,24,0,0">
+			<!--文字提示区-->
+			<VerticalLayout height="135" width="350" childpadding="3">       
+
+        <HorizontalLayout bkcolor="00ffffff">
+          <Label name="lable_Password" visible="true" height="50" width="330" text="确认关闭所有窗口并退出？" font="2"/>
+        </HorizontalLayout>
+      
+      </VerticalLayout>
+						
+			<!--按键区-->
+			<HorizontalLayout>
+        <Button name="btnok" float="true" pos="42,0,140,42" normalimage=" file='SysBtn\ok1.png' " hotimage=" file='SysBtn\ok2.png' " pushedimage=" file='SysBtn\ok3.png' " />
+        <Button name="btnclose" float="true" pos="228,0,326,42" normalimage=" file='SysBtn\close1.png' " hotimage=" file='SysBtn\close2.png' " pushedimage=" file='SysBtn\close3.png' "/>
+			</HorizontalLayout>
+		</VerticalLayout>
+    </VerticalLayout>
+</Window>

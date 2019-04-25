@@ -1,0 +1,51 @@
+CEF3 二进制文件及资源文件说明
+个人分类： WEBKIT/CEF
+一、目录总览
+在Release目录成功编译完libcef后，会看到Relase目录有以下文件生成
+
+二、详细说明
+
+1、必须文件，缺少任意一个CEF将无法运行：
+
+libcef.dll
+    这个不用多说，CEF的核心库文件，js引擎、网页加载渲染逻辑等都在其中，
+    也是size最大的一个文件（Release版将近50M，Debug版超过500M）。
+
+icudtl.dat 
+    用来支持unicode。
+
+natives_blob.bin
+snapshot_blob.bin
+    V8引擎快照数据。
+
+2、可选文件：
+
+locales/
+    该目录包含CEF，Chromium和Blink使用的本地化资源。 CefSettings.locale指定需要加载的.pak文件。 
+    只需要发布配置的区域对应的.pak文件。 如果没有区域设置将配置默认语言环境“en-US”。
+    如果没有这些文件任意Web组件可能显示不正确。
+
+cef.pak
+cef_100_percent.pak
+cef_200_percent.pak
+    这些文件包含了供CEF使用的区域无关资源，缺少这些文件任意Web组件可能显示不正确。
+   （笔者当时缺少cef_100_percent.pak，cef_200_percent.pak两文件，导致视频控件不显示音量和最大化按钮）。
+
+cef_extensions.pak
+    此文件包含扩展加载所需的非本地化资源传递`--disable-extensions`命令行标志来禁止使用文件。
+    没有这个文件，依赖于扩展系统的组件将不起作用，如PDF查看器。
+
+devtools_resources.pak
+    此文件包含Chrome开发者工具所需的非本地化资源，缺少这个文件，Chrome开发者工具将无法运行。
+
+d3dcompiler_43.dll (Windows XP需要该文件)
+d3dcompiler_47.dll (Windows Vista和更高版本的系统需要该文件)
+libEGL.dll
+libGLESv2.dll
+    Direct3D支持文件，如果缺少这些文件，HTML5在渲染2D画布，3D CSS，WebGL时将不起作用。
+
+wow_helper.exe
+    用来支持Windows Vista 64位沙箱。如果没有这个文件，32位的CEF将无法在开启了沙箱的64位的Vista机器上运行。
+
+PS：英文好的老铁可以直接参考 
+https://bitbucket.org/chromiumembedded/cef/src/816f700d3ea42bedc5ca5a2314c27b761b69abc5/tools/distrib/win/README.redistrib.txt?at=master&fileviewer=file-view-default

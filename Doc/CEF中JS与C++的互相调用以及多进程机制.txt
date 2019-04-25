@@ -1,0 +1,112 @@
+JavaScript 与 C++ 的互相调用
+其实这方面的内容我已经在上一篇博客中讲述过了，这里之所以还要再讲述一下，
+是因为在重新建立Cef3项目进行编写的时候遇到了比较难走的坑，这里记录下来。
+
+首先说 C++ 调用 JavaScript，这个的实现实在是很简单，为什么呢？
+因为我们可以拿着 CefBrowser 的实例直接调用 ExecuteJavaScript 函数呀：
+
+void Browser::executeJS(const wchar_t *code, const wchar_t *url, int start_line)
+{
+    if (!code)
+        return;
+    CefRefPtr<CefFrame> frame = mainFrame();
+    if (!frame)
+        return;
+    frame->ExecuteJavaScript(code, url, start_line);
+}
+其中 mainFrame 函数是由 CefRefPtr<CefBrowser> 获取 frame 的实现。
+
+那么接下来，由 JavaScript 调用 C++ 就不简单了。
+
+首先来说说上面代码结构中没有讲述的 CefApp 类的实现：要记住 Cef3 的项目大多都是多进程的，
+多进程的关键在于，你要意识到当前的进程在做什么。
+
+比如程序当前运行的显示界面执行浏览器回调任务的，这就是 UI 进程，也就是 Cef3 官方定义的 TID_UI 进程；
+而我们用来渲染界面执行 JavaScript 行为的，则是在我们的 Render 进程上执行的，代码中将其定义为 PID_RENDERER。
+
+那么 CefApp 实现是干什么的呢？是用来处理多进程信息交互的。也就是说，
+只要你当前的进程不需要处理其他进程的回调信息，那就不用实现它。
+
+因此，在 UI 进程中，我们只需要程序运行，显示显示界面，完全不需要理会 Render 进程的回调信息，
+就不需要实现这个 CefApp 实现。
+
+那么，在 Render 进程中，我们需要约定绑定的 C++ 和 JavaScript 都共同承认的一个调用约定，
+就得需要实现一个 CefApp 实现来管理它。
+
+那么 Render 进程的代码工程在哪里呢？
+
+在你的子进程中，也就是你在使用 CefInitialize 函数之前设置的 CefSettings 的 browser_subprocess_path 
+的路径的那个执行程序：
+
+void Cef3Loader::Initialize()
+    {
+        SASSERT(!bInitialized);
+        CefMainArgs args(GetModuleHandle(NULL));
+
+        // cef settings
+        CefSettings settings;
+        settings.no_sandbox = true;
+        settings.multi_threaded_message_loop = false;
+
+        // cef sub process path
+        SStringW strAppPath;
+        strAppPath = _T("cefclient.exe");
+        CefString(&settings.browser_subprocess_path) = strAppPath;
+        settings.windowless_rendering_enabled = true;
+        settings.single_process = false;
+
+        // cef locate 
+        CefString(&settings.locale) = "zh-CN";
+
+        // cef initialize
+        BOOL bOK = CefInitialize(args, settings, NULL, NULL);
+        bInitialized = true;
+    }
+所以，这里我们使用的是官方的实例 cefclient 生成的 exe 进程，那么我们要让 cefclient 
+这个 Render 进程能够使用 JavaScript 调用我们 UI 进程的 C++ 代码，就得在 cefclient 
+项目中去修改（要认识到这一点很不容易，你要对 Cef3 的多进程有一定的认识，
+不然像我一样一直在 UI 进程找原因始终找不到）。
+
+于是，打开 cef.sln，在 cefclient 中找到继承了 ClientApp 和 CefRenderProcessHandler 
+类的子类（我的是 Cef3071 版本，其中是 ClientAppRenderer 类），
+在其中的 ClientAppRenderer::OnContextCreated 函数中添加我们的注册函数即可，这里代码如下：
+
+void ClientAppRenderer::OnContextCreated(CefRefPtr<CefBrowser> browser,
+                                         CefRefPtr<CefFrame> frame,
+                                         CefRefPtr<CefV8Context> context) {
+    (*it)->OnContextCreated(this, browser, frame, context);
+    CefRefPtr<CefV8Value> object = context->GetGlobal();
+    CefRefPtr<CefV8Handler> handler = new HtmlEventHandler();
+    CefRefPtr<CefV8Value> func = CefV8Value::CreateFunction("HandleEvent", handler);
+    object->SetValue("HandleEvent", func, V8_PROPERTY_ATTRIBUTE_NONE);
+}
+在这个函数中注册了全局的函数 HandleEvent ，我们可以在 JavaScript 中调用，
+其中 HtmlEventHandler 封装了继承自 CefV8Handler 的方法 Excute，也就是每个 
+JavaScript 函数的执行都需要经过这里。
+我们在其中筛选我们需要的函数 HandleEvent 进行 UI 进程的消息发送：
+
+bool HtmlEventHandler::Execute(const CefString& name, 
+                               CefRefPtr<CefV8Value> object, 
+                               const CefV8ValueList& arguments, 
+                               CefRefPtr<CefV8Value>& retval, 
+                               CefString& exception) 
+{
+    if (name != "HandleEvent" || arguments.size() == 0) { return true; }
+    CefRefPtr<CefBrowser> browser =
+        CefV8Context::GetCurrentContext()->GetBrowser();
+
+    CefRefPtr<CefProcessMessage> message =
+        CefProcessMessage::Create(arguments[0]->GetStringValue());
+
+    message->GetArgumentList()->SetSize(arguments.size() - 1);
+    for (size_t i = 1; i < arguments.size(); ++i) {
+        message->GetArgumentList()->SetString(i - 1, arguments[i]->GetStringValue());
+    }
+
+    browser->SendProcessMessage(PID_BROWSER, message);
+
+    return false;
+}
+
+然后再回到我们的 UI 进程中，在 Browser 类中的继承自 CefClient 类的 
+OnProcessMessageReceived 方法中，将我们收到的 Render 进程的消息转发给 UI 管理类显示即可。

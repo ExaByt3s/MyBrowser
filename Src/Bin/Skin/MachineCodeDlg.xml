@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Window size="634,260" mininfo="634,260" maxinfo="634,260" caption="0,0,0,46" sizebox="0,0,0,0">
+  <Font id = "0" name="Segoe UI" size="18" bold="true" italic="false" />
+  <Font id = "1" name="Segoe UI" size="21" bold="false" italic="false" />
+  <Font id = "2" name="Segoe UI" size="18" bold="false" italic="false" />
+
+  <!-- 整个窗口的背景色 -->
+  <VerticalLayout bkcolor="#FFE5E5E5" bordersize="1" bordercolor="#c2c2c2">
+    <!-- 标题栏区 -->
+    <VerticalLayout height="45" width="634">
+      <!--
+			<HorizontalLayout height="2" bkcolor="#ffed1d1d">
+			</HorizontalLayout>
+      -->
+      <HorizontalLayout bkcolor="#FF9FC5E8">
+        <!-- 00ffffff -->
+        <VerticalLayout >
+          <HorizontalLayout float="true" pos="5,5,38,40" bkimage="file='images/logo.png'" />
+        </VerticalLayout>
+        <VerticalLayout float="true" pos="50,5,350,40">
+          <Label name="lable_caption" height="35" width="100" text="机器码" font="1"/>
+        </VerticalLayout>
+      </HorizontalLayout>
+    </VerticalLayout>
+
+    <!-- 客户区 -->
+    <VerticalLayout  padding="40,24,0,0">
+      <!--文字提示区-->
+      <VerticalLayout height="135" width="550" childpadding="3">
+        <!--
+			    <HorizontalLayout bkcolor="00ffffff">
+				    <Label name="lable_hdsn" visible="false" height="24" width="100" text="硬盘序列号" font="2"/>
+					   <Edit name="editHdSn" visible="false" height="32" width="250" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input"/>
+				  </HorizontalLayout>
+				
+			    <HorizontalLayout bkcolor="00ffffff">
+				    <Label name="lable_hsmodel" visible="false" height="24" width="100" text="   硬盘型号" font="2"/>
+					  <Edit name="editHdMod" visible="false" height="32" width="250" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input"/>
+				  </HorizontalLayout>
+				
+			    <HorizontalLayout bkcolor="00ffffff">
+				    <Label name="lable_cpuid" visible="false" height="24" width="100" text="CPU序列号" font="2"/>
+					  <Edit name="editCPUID" visible="false" height="32" width="250" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input"/>
+				  </HorizontalLayout>
+
+			    <HorizontalLayout bkcolor="00ffffff">
+				    <Label name="lable_localmac" visible="false" height="24" width="100" text="  本机MAC" font="2"/>
+					  <Edit name="editLocalMac" visible="false" height="32" width="250" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input"/>
+				  </HorizontalLayout>
+				
+			    <HorizontalLayout bkcolor="00ffffff">
+				    <Label name="lable_routemac" visible="false" height="24" width="100" text="  路由MAC" font="2"/>
+					  <Edit name="editRouteMac" visible="false" height="32" width="250" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input"/>
+				  </HorizontalLayout>
+        -->
+        
+        <HorizontalLayout bkcolor="00ffffff">
+          <Label name="lable_CompanyName_Prompt" visible="true" height="24" width="100" text="  公司名称" font="2"/>
+          <Label name="lable_CompanyName_Content" visible="true" height="24" width="300" text="  " font="2"/>
+        </HorizontalLayout>
+
+        <HorizontalLayout bkcolor="00ffffff">
+          <Label name="lable_MachineCode" visible="true" height="24" width="100" text="  机  器  码" font="2"/>
+          <Edit name="editMachineCode" visible="true" height="32" width="450" padding="0,0,0,0" bordersize="1" bordercolor="#c2c2c2" focusbordercolor="#87a9e0" maxchar="100" tooltip="please input" font="2"/>
+        </HorizontalLayout>
+
+      </VerticalLayout>
+
+      <!--按键区-->
+      <HorizontalLayout>
+        <Button name="confirmbtn" float="true" pos="102,0,200,42" normalimage=" file='SysBtn\confirm1.png' " hotimage=" file='SysBtn\confirm2.png' " pushedimage=" file='SysBtn\confirm3.png' " />
+        <Button name="closebtn" float="true" pos="328,0,426,42" normalimage=" file='SysBtn\close1.png' " hotimage=" file='SysBtn\close2.png' " pushedimage=" file='SysBtn\close3.png' "/>
+      </HorizontalLayout>
+    </VerticalLayout>
+  </VerticalLayout>
+</Window>

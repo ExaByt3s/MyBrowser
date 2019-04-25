@@ -1,0 +1,72 @@
+<html>
+  <head>
+  <title>Binding测试</title>
+
+  <script language="JavaScript">
+
+    // Send a query to the browser process.
+    function sendMessage() {
+      // Results in a call to the OnQuery method in binding_test.cpp
+      window.cefQuery({
+          request: 'BindingTest:' + document.getElementById("message").value,
+          onSuccess: function(response) {
+          document.getElementById('result').value = 'Response: ' + response;
+        },
+        onFailure: function(error_code, error_message) {}
+      });
+    }
+
+    function GetMachineCode() {
+        // alert(window.getMachineCode());
+        document.getElementById('result').value = window.getMachineCode();
+    }
+
+    function GetMachineInfo() {
+        // alert(window.getMachineInfo());
+        document.getElementById('result').value = window.getMachineInfo().replace(/@/g, "\n");
+    }
+
+    function ShowLoginDlg() {
+        window.showLoginDlg();
+    }
+
+    function ShowAlertDlg() {
+        // alert('弹框测试');
+
+        if (confirm('您同意吗?')) {
+            alert('同意');
+        }
+    }
+
+  </script>
+
+  </head>
+
+  <body bgcolor="white">
+    <form>
+      <br /><br />
+        &nbsp;消&nbsp;息&nbsp;:&nbsp; <input type="text" id="message" value="">
+      <br /> <br/>
+        &nbsp;<input type="button" onclick="sendMessage();" value="发送消息">
+      <br/> <br/>
+        &nbsp;<textarea rows="10" cols="80" id="result"></textarea>
+      <br/> <br/>
+        &nbsp;<input type="button" onclick="GetMachineCode();" value="获取机器码">
+        &nbsp;&nbsp;
+        <input type="button" onclick="GetMachineInfo();" value="获取机器信息">
+        &nbsp;&nbsp;
+       <input type="button" onclick="ShowLoginDlg();" value="弹出登录窗口">
+        &nbsp;&nbsp;
+        <input type="button" onclick="ShowAlertDlg();" value="弹出确认窗口">
+        <br /> <br />
+        &nbsp;<a href="http://webcast.cechina.cn/Help/TestFlv.aspx" target="_blank">FLASH测试地址1</a>
+        &nbsp;&nbsp;
+        <a href="http://ssfw.njfy.gov.cn/ssfwzx/ext/flash/flash.jsp" target="_blank">FLASH测试地址2</a>
+        <br /> <br />
+        &nbsp;<a href="http://html5test.com" target="_blank">H5特性测试</a>
+        &nbsp;&nbsp;
+        <a href="http://chrome.360.cn/test/html5/index.html" target="_blank">H5特性测试地址2</a>
+    </form>
+  </body>
+
+</html>

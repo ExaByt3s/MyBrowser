@@ -1,0 +1,11 @@
+[0] 注意!!!!!!
+    如需编译代码，请从[1]中所示地址下载cef_binary_****开头的文件，
+然后使用cmake生成vs工程；
+    是binary,不是source code!!!!!!
+
+[1] cef下载地址：
+http://opensource.spotify.com/cefbuilds/index.html#
+
+[2] cef项目地址：
+https://bitbucket.org/chromiumembedded/cef/
+
