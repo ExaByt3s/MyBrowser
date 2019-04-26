@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "MyBrowser3.3.6"
-#define MyAppNameCn "我爱我家浏览器3.3.6"
+#define MyAppNameCn "TopInfo浏览器3.3.6"
 #define MyAppVersion "3.3.6"
 #define MyAppPublisher "5i5j"
 #define MyAppURL "http://www.5i5j.com/"
@@ -17,12 +17,12 @@
 AppId={{AF491E5A-6456-44ED-A568-1718C4FCB336}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-AppPublisher="我爱我家"
+AppPublisher="TopInfo"
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppPublisher}\{#MyAppName}
-DefaultGroupName="我爱我家"
+DefaultGroupName="TopInfo"
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputBaseFilename=MyBrowserSetup3.3
