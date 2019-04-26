@@ -111,7 +111,7 @@ namespace Browser
 
 		if (labelTitle != NULL) {
 			DuiLib::CDuiString strTitleText;
-			strTitleText.Format(_T("【我爱我家浏览器%s】- %s%s"), 
+			strTitleText.Format(_T("【TopInfo浏览器%s】- %s%s"), 
 				GLOBALS::strMajorVersion.GetBuffer(), // _T("3.3.2"),
 				GLOBALS::strCompanyName.GetBuffer(),  // _T("北京分公司"),
 				GLOBALS::strUsageTips.GetBuffer()     // _T("店面专用版"
